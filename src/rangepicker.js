@@ -157,7 +157,7 @@ var RangePicker = Class.create({
 
     this.date = this.options.current.clone();
     this.range = {start: this.date.clone(), end: this.date.clone()};
-    
+
     // Seleccions en el calendari
     this.selecting = false;
     this.selection = {start: this.range.start.clone(), end: this.range.end.clone(), pin: null};
@@ -233,7 +233,7 @@ var RangePicker = Class.create({
       var caption = calendar.down('caption');
       // Nom del més en l'idioma corresponent
       caption.update(this.locale.date.monthNames[start.getMonth()] + ' ' + start.getFullYear());
-      
+
       var current = start.clone().moveToFirstDayOfMonth();
       // 1er dia del més actual
       var firstDay = current.clone();
@@ -266,14 +266,14 @@ var RangePicker = Class.create({
 
         // ens guardem una copia de les clases assignades per a operacions posteriors
         cell.classDefault = cell.readAttribute('class');
-        
+
         current.addDays(1);
       }.bind(this));
 
       start.addMonths(1);
     }
-    
-    // Dibuixem la sel.lecció 
+
+    // Dibuixem la sel.lecció
     this.refreshSelectionRange(this.selection.start, this.selection.end);
   },
 
@@ -300,7 +300,7 @@ var RangePicker = Class.create({
     }.bind(this));
 
     // Controls
-    // Botons d'acceptar i cancel.lar    
+    // Botons d'acceptar i cancel.lar
     this.rangeControls.okButton.observe('click', this.onAcceptClick.bind(this));
     this.rangeControls.cancelButton.observe('click', this.onCancelClick.bind(this));
     // Inputs de data (rang)
@@ -325,41 +325,41 @@ var RangePicker = Class.create({
       this.fill();
     }
   },
-  
+
   onDayCellClick: function(e) {
     var day = Event.element(e);
-    
+
     if ( !this.selecting && !day.hasClassName('unselectable') ) {
       // establim el pin (primer click d'una selecció de rang)
       this.selection.pin = day.date.clone();
-      
+
       // el rang comença i acaba amb la data on hem fet click
       this.selection.start = day.date.clone();
       this.selection.end = day.date.clone();
-      
+
       // seleccionem la cel.la
       this.selectDayCell(day);
 
       // actualitzem la visualització del rang seleccionat
       this.refreshSelectionRange(this.selection.start, this.selection.end);
     }
-    this.selecting = !this.selecting;    
+    this.selecting = !this.selecting;
   },
-  
+
   onDayCellMouseOver: function(e) {
     // si no hem fet click previament (no estem seleccionant), fora
     if ( !this.selecting ) return;
-    
+
     // cel.la per on ens estem movent
     var dayOver = Event.element(e);
-    
+
     // actualitzem el rang a les dates compreses entre la data del primer click i la que ens movem
-    this.refreshSelectionRange(this.selection.pin, dayOver.date);  
+    this.refreshSelectionRange(this.selection.pin, dayOver.date);
   },
 
   onRangeFieldChange: function(element, value) {
     if ( this.selecting ) return;
-    
+
     if ( !Date.parse(value) ) {
       element.addClassName('error');
       Effect.Shake(element, {distance: 2, duration: 0.2, afterFinish: function() { element.focus(); }});
@@ -377,15 +377,15 @@ var RangePicker = Class.create({
         Effect.Fade(this.rangeControls.errorMessage, {duration: 0.3});
       else
         this.rangeControls.errorMessage.hide();
-      this.rangeControls.okButton.enable();        
+      this.rangeControls.okButton.enable();
     }
   },
-  
+
   onRangeFieldBlur: function(e) {
     if ( this.isValidRange() ) {
       this.selection.start = Date.parse(this.rangeControls.start.value.strip());
       this.selection.end = Date.parse(this.rangeControls.end.value.strip());
-      this.refreshSelectionRange(this.selection.start, this.selection.end);      
+      this.refreshSelectionRange(this.selection.start, this.selection.end);
     }
   },
 
@@ -393,14 +393,18 @@ var RangePicker = Class.create({
     // Actualitzem el rang a partir de la selecció realitzada
     this.range.start = this.selection.start.clone();
     this.range.end = this.selection.end.clone();
-    
+
     // Actualitzem el display
     var newRangeDisplay = this.rangeToDisplayString();
     this.display.update(newRangeDisplay).writeAttribute('title', newRangeDisplay.replace('&ndash;', '-'));
-    
+
     // Amaguem el selector de rangs de dates
     this.toggleRangeSelector();
-    
+
+    // dispatch onRangeChange() callback if present (by solomongaby)
+    if ( this.options.onRangeChange )
+      this.options.onRangeChange();
+
     if ( this.options.useEffects )
       new Effect.Highlight(this.display, {duration: 0.5});
   },
@@ -408,26 +412,26 @@ var RangePicker = Class.create({
   onCancelClick: function(e) {
     // Amaguem el selector de rangs de dates
     this.toggleRangeSelector();
-    
+
     // desfem
     this.selection.start = this.range.start.clone();
     this.selection.end = this.range.end.clone();
     this.selection.pin = null;
     this.refreshSelectionRange(this.selection.start, this.selection.end);
-    
+
     // per si estava actiu...
-    this.rangeControls.errorMessage.hide();    
+    this.rangeControls.errorMessage.hide();
   },
 
   toggleRangeSelector: function() {
     var dropdown = $('rangepicker_display').down('.dropdown');
     dropdown.toggleClassName('up');
-    
+
     var calendarSelector = $('rangepicker_calendars');
-    
-    if ( !this.options.useEffects ) 
+
+    if ( !this.options.useEffects )
       calendarSelector.toggle();
-    else 
+    else
       Effect.toggle(calendarSelector,'blind', {duration: 0.5});
   },
 
@@ -455,42 +459,43 @@ var RangePicker = Class.create({
         cell.addClassName('selected');
     }
   },
-  
-  refreshSelectionRange: function(start, end) {    
+
+  refreshSelectionRange: function(start, end) {
     if ( !start || !end ) return;
-    
+
     this.element.select('#calendars_container td').each(function(day) {
       day.writeAttribute('class',day.classDefault);
-      
+
       if ( typeof day.date == 'undefined' ) return;
-      
+
       if ( day.date.between(start, end) || day.date.between(end, start) )
         this.selectDayCell(day);
     }.bind(this));
-    
-    var selectedDays = this.element.select('#calendars_container td.selected'); 
+
+    var selectedDays = this.element.select('#calendars_container td.selected');
     if ( selectedDays.length >= 1 ) {
       var dayStart = selectedDays.first();
       var dayEnd = selectedDays.last();
-      
+
       if ( dayStart.date.equals(dayEnd.date) )
         dayStart.addClassName('startendrange').removeClassName('startrange').removeClassName('endrange');
       else {
         dayStart.addClassName('startrange');
         dayEnd.addClassName('endrange');
       }
-      
+
       this.selection.start = dayStart.date.clone();
       this.selection.end = dayEnd.date.clone();
-          
+
       this.rangeControls.start.value = this.selection.start.toString(this.locale.date.format);
       this.rangeControls.end.value = this.selection.end.toString(this.locale.date.format);
-      
+
       this.onRangeFieldChange(this.rangeControls.start, this.rangeControls.start.value);
     }
   },
-    
+
   rangeToDisplayString: function() {
     return new String(this.range.start.toString(this.locale.date.displayFormat) + ' &ndash; ' + this.range.end.toString(this.locale.date.displayFormat));
   }
 });
+
