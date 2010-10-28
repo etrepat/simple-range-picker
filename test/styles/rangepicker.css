@@ -1,0 +1,260 @@
+#rangepicker {
+ position: relative;
+ z-index: 10;  
+}
+
+/* Selector */
+
+#rangepicker a.display {
+	margin: 0;
+	color: #333;
+	text-decoration: none;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	display: table;
+	outline: none;
+	margin-bottom: -1px;
+}
+
+#rangepicker a.display:hover {
+  border: 1px solid #aaa;
+}
+
+#rangepicker a.display table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-weight: inherit;
+}
+
+#rangepicker a.display table td.dropdown {
+  width: 20px;
+  border-left: 1px solid #ddd;
+}
+
+#rangepicker a.display table td.dropdown.down {
+  background: #f7f7f7 url('../images/button_arrow_down.gif') no-repeat scroll center center;
+}
+
+#rangepicker a.display table td.dropdown.up {
+  background: #f7f7f7 url('../images/button_arrow_up.gif') no-repeat scroll center center;
+}
+
+/* Calendaris */
+
+#rangepicker .calendars  {
+  display: inline-block;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  border: 1px solid #ddd;
+  z-index: 99;
+  background-color: #f7f7f7;
+}
+
+/** Controls **/
+
+#rangepicker .calendars ul#calendars_controls {
+  list-style-type: none;
+  font-weight: bold;
+  margin: auto;
+  padding: 0 0 6px;
+  width: 98px;
+}
+
+#rangepicker .calendars ul#calendars_controls li {
+  display: inline;
+}
+
+#rangepicker .calendars ul#calendars_controls li a {
+  display: inline-block;
+  height: 20px;
+  padding: 2px 0 0;
+  text-decoration: none;
+  width: 30px;
+}
+
+#rangepicker .calendars ul#calendars_controls li a.prev, 
+#rangepicker .calendars ul#calendars_controls li a.next,
+#rangepicker .calendars ul#calendars_controls li a.today {
+  color: #468966;  
+}
+
+#rangepicker .calendars ul#calendars_controls li a.prev:hover, 
+#rangepicker .calendars ul#calendars_controls li a.next:hover,
+#rangepicker .calendars ul#calendars_controls li a.today:hover {
+  text-decoration: underline;
+}
+
+#rangepicker .calendars ul#calendars_controls li a.prev:active, 
+#rangepicker .calendars ul#calendars_controls li a.next:active,
+#rangepicker .calendars ul#calendars_controls li a.today:active {
+  color: #eee;
+}
+
+/** Taula de calendari **/
+
+#rangepicker .calendars table {
+  display: inline;
+  display: inline-block;
+  font-size: 15px;
+  margin: 0 6px 12px;  
+  
+  background: #fff;
+  border-bottom: 3px solid #ccc;
+  border-right: 1px solid #999;
+}
+
+#rangepicker .calendars table caption {
+  font-variant: small-caps;
+  text-transform: capitalize;
+  text-shadow: #ccc 1px 1px 1px;
+  color: #fff;
+  background-color: #222;
+  font-weight: bold;
+}
+
+#rangepicker .calendars table thead th, #rangepicker .calendars table tbody td {
+  height: 18px;
+  margin: 0;
+  padding: 2px 1px;
+  width: 20px;
+
+  border-left: 1px solid #999;
+  border-top: 1px solid #999;
+  text-align: center;
+}
+
+#rangepicker .calendars table thead th {
+  background-color: #eee;
+  color: #000;
+  font-variant: small-caps;
+  text-transform: capitalize;
+}
+
+#rangepicker .calendars table tbody td {
+  cursor: pointer;
+}
+
+/* Seleccions */
+
+#rangepicker .calendars table tbody td.selectable:hover {
+  background-color: #bbb;
+}
+
+#rangepicker .calendars table tbody td.unselectable {
+  color: #ccc;
+  cursor: default;
+}
+
+#rangepicker .calendars table tbody td.selected {
+  /*background-color: #ffb03b;*/
+  background-color: #07c;
+  color: white;
+}
+
+#rangepicker .calendars table tbody td.selected:hover {
+  /*background-color: #e99a27;*/
+  background-color: #09e;
+  color: white;
+}
+
+/* Rangs */
+
+#rangepicker .calendars table tbody td.startrange, 
+#rangepicker .calendars table tbody td.endrange, 
+#rangepicker .calendars table tbody td.startendrange {
+  cursor: col-resize;
+}
+
+#rangepicker .calendars table tbody td.startrange {
+  background-image: url('../images/start.png');
+}
+
+#rangepicker .calendars table tbody td.endrange {
+  background-image: url('../images/end.png');
+}
+
+#rangepicker .calendars table tbody td.startendrange {
+  background-image: url('../images/startend.png');
+}
+
+#rangepicker .calendars table tbody td.today {
+  background-color: #468966;
+  color: #eee;
+}
+
+#rangepicker .calendars table tbody td.beyond {
+  background-color: #aaa;
+  background-image: none;
+  color: #ccc;
+}
+
+#rangepicker .calendars table tbody td.beyond_selected {
+  background-color: #888;
+  /*background-color: #05a;*/
+}
+
+/* Controls */
+
+#rangepicker .controls {
+  margin: 6px;
+  text-align: left;
+  font-size: 14px;  
+}
+
+#rangepicker .controls .inputs {
+  text-align: left;
+}
+
+#rangepicker .controls .buttons {
+  margin: 0;
+  padding: 0;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dotted #ddd;
+  text-align: right;
+}
+
+#rangepicker .controls .inputs label {
+  font-weight: bold;
+  display: block;
+}
+
+#rangepicker .controls .inputs input[type='text'] {
+  width: 96px;
+  padding: 2px 6px;
+
+  border: 2px solid #ccc;
+  background-color: #ffc;
+  
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+
+#rangepicker .controls .inputs input[type='text']:focus {
+  border: 2px solid #66f;
+}
+
+#rangepicker .controls .inputs input[type='text'].error {
+  border: 2px solid #f66;
+}
+
+#rangepicker .controls .inputs span#range_error_description {
+  padding: 0 6px;
+  padding-left: 18px;
+  color: #f33;
+  background: transparent url('../images/exclamation.png') no-repeat scroll center left;
+}
+
+#rangepicker .controls .buttons input[type='button'] {
+  padding: 0 6px;  
+}
+
+#rangepicker .controls .buttons a {
+  font-size: 11px;
+  text-decoration: underline;
+  color: #00f;
+}

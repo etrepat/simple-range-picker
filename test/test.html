@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>RangePicker test</title>
+    <link rel="stylesheet" href="styles/main.css" type="text/css" media="screen" title="" charset="utf-8" />
+    <link rel="stylesheet" href="styles/rangepicker.css" type="text/css" media="screen" title="" charset="utf-8" />
+  </head>
+  <body>
+    <h1>Javascript Range Picker</h1>
+    <h2>Pick a date range from the component below...</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <p>
+      <div style="margin: 20px">
+        <div id="rangepicker"></div>
+      </div>    
+    </p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <script src="../lib/prototype.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../lib/effects.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../lib/culture-en-US.js" type="text/javascript" charset="utf-8"></script>
+    <!-- 
+      for other languages just change the culture info file on the line above, ex:
+        <script src="../lib/culture-en-US.js" type="text/javascript" charset="utf-8"></script>      
+      then, on the source rangepicker.js look for the RangePickerOptions.Locale object, all captions
+      used by the component (accept, cancel, error messages, ...) can be translated there, on a separate override file or passed as
+      a constructor argument. Take a look at the source!
+    -->
+    <script src="../lib/date.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../src/rangepicker.js" type="text/javascript" charset="utf-8"></script>
+    
+    <script type="text/javascript" charset="utf-8">
+      var rp = null;
+      Event.observe(window, 'load', function(e) {
+        rp = new RangePicker('rangepicker');
+      });
+    </script>
+  </body>
+</html>
