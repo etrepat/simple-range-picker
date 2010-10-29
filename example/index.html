@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Simple Range Picker js component | GitHub</title>
+	<link rel="stylesheet" href="stylesheets/main.css" type="text/css" media="all" charset="utf-8" />
+  <link rel="stylesheet" href="stylesheets/rangepicker.css" type="text/css" media="screen" charset="utf-8" />	
+</head>
+<body>
+  <a href="http://github.com/etrepat/simplerangepicker"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+  <div id="container">
+  
+    <div class="download">
+      <a href="http://github.com/etrepat/simple-range-picker/zipball/master"><img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+      <a href="http://github.com/etrepat/simple-range-picker/tarball/master"><img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+    </div>
+
+    <h1><a href="http://github.com/etrepat/simple-range-picker">Simple Range Picker</a></h1>
+
+    <div class="description">
+      Yet another javascript date picker component
+    </div>
+
+    <h2>Motivation</h2>
+    <p>
+      Inspiration for this component came from the Flash-based date range 
+      picker you can see on <em>Google Analytics</em> and 
+      <a href="http://stephencelis.com/" title="Stephen Celis's">Stephen Celis's</a> 
+      <a href="http://stephencelis.github.com/timeframe" title="Timeframe">Timeframe</a> 
+      component. It's sort of a mix of the two.
+    </p>
+        
+    <h2>Usage</h2>
+    <pre><code>new RangePicker(element[, options, locale, template]);</code></pre>
+    <p>For insight on the options available or what attributes may be supported
+    by the locale and template objects, please take a look at the  <a href="http://github.com/etrepat/simple-range-picker/blob/master/README.md" title="README">README</a> 
+    on the <a href="http://github.com/etrepat/simple-range-picker" title="github project page">github project page</a>.</p>
+    
+    <h2>Documentation</h2>
+    <p><a href="http://github.com/etrepat/simple-range-picker/blob/master/README.md">README</a></p>
+    
+    <h2>Example</h2>
+    <p>Please, picka a date range...</p>
+    <div id="rangepicker"></div>
+    <p>Generated from the code below (check source code for more detail):</p>
+    <pre><code>
+      &lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;
+        //&lt;![CDATA[
+          document.observe(&#x27dom:loaded&#x27, function() {
+            new RangePicker(&#x27rangepicker&#x27, {
+                months: 3,
+                currentMonthPosition: &#x27last&#x27
+            });
+          });
+        //]]&gt;
+      &lt;/script&gt;
+    </code></pre>
+
+    <h2>Download</h2>
+    <p>
+      You can download this project in either
+      <a href="http://github.com/etrepat/simple-range-picker/zipball/master">zip</a> or
+      <a href="http://github.com/etrepat/simple-range-picker/tarball/master">tar</a> formats.
+    </p>
+    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
+      by running:
+      <pre>$ git clone git://github.com/eventmachine/eventmachine</pre>
+    </p>
+    
+    <h2>Dependencies</h2>
+    
+    <h2>Localization</h2>
+    <p>Localization with <em>SimpleRangePicker</em> can be accomplished by modifying
+    the strings present in <code>RangePickerOptions.Locale</code> object.</p>
+    <p>Also, as this project uses DateJS for date manipulation, dropping a localized
+    culture info file will do the job for date formats, day names, etc.</p>
+
+    <div class="footer">
+      get the source code on GitHub: 
+      <a href="http://github.com/etrepat/simple-range-picker">etrepat/simple-range-picker</a>
+    </div>
+  </div>
+  <script src="../lib/prototype.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../lib/effects.js" type="text/javascript" charset="utf-8"></script>
+  <!--
+  Also, take a look at RangePickerOptions.Locale object. All captions used
+  by the component can be translated there, overriden on a separate file or passed
+  as a parameter to RangePicker constructor.
+  -->
+  <script src="../lib/culture-en-US.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../lib/date.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../src/rangepicker.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+    document.observe('dom:loaded', function() {
+      new RangePicker('rangepicker', {
+        months: 3,
+        currentMonthPosition: 'last'
+      });
+    });
+    //]]>
+  </script>
+</body>
+</html>

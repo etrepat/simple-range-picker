@@ -1,6 +1,8 @@
 #rangepicker {
+ font-family: Arial, Helvetica, sans-serif;
+ font-size: 1em;
  position: relative;
- z-index: 10;  
+ z-index: 10;
 }
 
 /* Selector */
@@ -76,19 +78,19 @@
   width: 30px;
 }
 
-#rangepicker .calendars ul#calendars_controls li a.prev, 
+#rangepicker .calendars ul#calendars_controls li a.prev,
 #rangepicker .calendars ul#calendars_controls li a.next,
 #rangepicker .calendars ul#calendars_controls li a.today {
-  color: #468966;  
+  color: #468966;
 }
 
-#rangepicker .calendars ul#calendars_controls li a.prev:hover, 
+#rangepicker .calendars ul#calendars_controls li a.prev:hover,
 #rangepicker .calendars ul#calendars_controls li a.next:hover,
 #rangepicker .calendars ul#calendars_controls li a.today:hover {
   text-decoration: underline;
 }
 
-#rangepicker .calendars ul#calendars_controls li a.prev:active, 
+#rangepicker .calendars ul#calendars_controls li a.prev:active,
 #rangepicker .calendars ul#calendars_controls li a.next:active,
 #rangepicker .calendars ul#calendars_controls li a.today:active {
   color: #eee;
@@ -100,8 +102,8 @@
   display: inline;
   display: inline-block;
   font-size: 15px;
-  margin: 0 6px 12px;  
-  
+  margin: 0 6px 12px;
+
   background: #fff;
   border-bottom: 3px solid #ccc;
   border-right: 1px solid #999;
@@ -163,8 +165,8 @@
 
 /* Rangs */
 
-#rangepicker .calendars table tbody td.startrange, 
-#rangepicker .calendars table tbody td.endrange, 
+#rangepicker .calendars table tbody td.startrange,
+#rangepicker .calendars table tbody td.endrange,
 #rangepicker .calendars table tbody td.startendrange {
   cursor: col-resize;
 }
@@ -202,7 +204,7 @@
 #rangepicker .controls {
   margin: 6px;
   text-align: left;
-  font-size: 14px;  
+  font-size: 14px;
 }
 
 #rangepicker .controls .inputs {
@@ -229,7 +231,7 @@
 
   border: 2px solid #ccc;
   background-color: #ffc;
-  
+
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
 }
@@ -250,7 +252,7 @@
 }
 
 #rangepicker .controls .buttons input[type='button'] {
-  padding: 0 6px;  
+  padding: 0 6px;
 }
 
 #rangepicker .controls .buttons a {
@@ -258,3 +260,4 @@
   text-decoration: underline;
   color: #00f;
 }
+
