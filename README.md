@@ -52,8 +52,11 @@ Notes:
 - All dependencies are bundled on the `lib` directory at what version they
 were when this component was written.
 
-## TODO
+## Localization
 
+Localization can be accomplished by modifying the strings present in `RangePickerOptions.Locale`
+object. Also, as this project relies on the [Datejs](http://code.google.com/p/datejs/) library for 
+date manipulation, dropping a localized *culture info file* will do the job for date formats, day names, etc.
 
 ---
 
