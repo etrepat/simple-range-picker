@@ -60,5 +60,5 @@ date manipulation, dropping a localized *culture info file* will do the job for 
 
 ---
 
-Coded by Estanislau Trepat, released under the MIT License: [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
+Coded by Estanislau Trepat, released under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
 
