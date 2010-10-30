@@ -143,7 +143,7 @@ var RangePickerOptions = {
 
 var RangePicker = Class.create({
 
-  version: '0.5',
+  version: '0.6',
 
   initialize: function(element) {
     this.element = $(element);
@@ -214,6 +214,7 @@ var RangePicker = Class.create({
     this.element.update(rangepicker.evaluate(conv));
 
     this.display = this.element.down('td');
+    this.dropDownArrow = this.display.next();
     this.rangeControls = {
       start: $('inici'), 
       end: $('fi'), 
@@ -295,6 +296,7 @@ var RangePicker = Class.create({
 
     // main display
     this.display.observe('click', this.toggleRangeSelector.bind(this));
+    this.dropDownArrow.observe('click', this.toggleRangeSelector.bind(this));
 
     // calendar buttons (prev, next, today)
     if ( el = $('calendars_controls').down('.calendar_button.prev') )
