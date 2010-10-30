@@ -327,6 +327,8 @@ var RangePicker = Class.create({
   /////////////////////////////////////////////////////////////////////////////
 
   onCalendarButtonClick: function(e) {
+    e.stop();
+    
     var el = e.findElement('.calendar_button');
     if ( el ) {
       if ( el.hasClassName('prev') ) {
@@ -338,9 +340,13 @@ var RangePicker = Class.create({
       }
       this.fill();
     }
+    
+    return false;
   },
 
   onDayCellClick: function(e) {
+    e.stop();
+    
     var day = Event.element(e);
 
     if ( !this.selecting && !day.hasClassName('unselectable') ) {
@@ -359,6 +365,8 @@ var RangePicker = Class.create({
       this.refreshSelectionRange(this.selection.start, this.selection.end);
     }
     this.selecting = !this.selecting;
+    
+    return false;
   },
 
   onDayCellMouseOver: function(e) {
@@ -405,6 +413,8 @@ var RangePicker = Class.create({
   },
 
   onAcceptClick: function(e) {
+    if ( e ) e.stop();
+    
     // update range from selection
     this.range.start = this.selection.start.clone();
     this.range.end = this.selection.end.clone();
@@ -418,13 +428,17 @@ var RangePicker = Class.create({
 
     // dispatch onRangeChange() callback if present
     if ( this.options.onRangeChange )
-      this.options.onRangeChange();
+      this.options.onRangeChange();      
 
     if ( this.options.useEffects )
       new Effect.Highlight(this.display, {duration: 0.5});
+      
+    return false;
   },
 
   onCancelClick: function(e) {
+    if ( e ) e.stop();
+    
     // hide date range selector
     this.toggleRangeSelector();
 
@@ -436,9 +450,13 @@ var RangePicker = Class.create({
 
     // just in case it was active...
     this.rangeControls.errorMessage.hide();
+    
+    return false;
   },
 
-  toggleRangeSelector: function() {
+  toggleRangeSelector: function(e) {
+    if ( e ) e.stop();
+    
     var dropdown = $('rangepicker_display').down('.dropdown');
     dropdown.toggleClassName('up');
 
@@ -448,6 +466,8 @@ var RangePicker = Class.create({
       calendarSelector.toggle();
     else
       Effect.toggle(calendarSelector,'blind', {duration: 0.5});
+      
+    return false;
   },
 
   isValidRange: function() {
@@ -510,7 +530,10 @@ var RangePicker = Class.create({
   },
 
   rangeToDisplayString: function() {
-    return new String(this.range.start.toString(this.locale.date.displayFormat) + ' &ndash; ' + this.range.end.toString(this.locale.date.displayFormat));
+    return [
+      this.range.start.toString(this.locale.date.displayFormat),
+      this.range.end.toString(this.locale.date.displayFormat)
+    ].join(' &ndash; ');
   }
 });
 
