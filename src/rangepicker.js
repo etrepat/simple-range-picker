@@ -1,4 +1,3 @@
-
 if ( typeof Prototype == 'undefined' || parseFloat(Prototype.Version.substring(0, 3)) < 1.6 )
   throw('RangePicker necessita de Prototype 1.6 o superior.');
 
@@ -6,56 +5,59 @@ if ( typeof Date.CultureInfo == 'undefined' )
   throw('RangePicker necessita de la llibreria DateJS.');
 
 var RangePickerOptions = {
-  // Idioma (locale)
+  // locale options object
+  // By using a localized culture info file (see the source code of the example site)
+  // and localizing the strings here you should get a fully functional 
+  // RangePicker in your own language.
   Locale: {
-    // Dates
-    date: {
-      // format de la data en el display
-      displayFormat: 'd MMM yyyy',
+  
+    date: {      
+      // date format on the main display
+      displayFormat: 'MMM d, yyyy',
 
-      // format de la data (inputs)
+      // main date format (for the inputs)
       format: Date.CultureInfo.formatPatterns.shortDate,
 
-      // noms dels mesos
+      // month names
       monthNames: Date.CultureInfo.monthNames,
 
-      // noms dels dies
+      // day names
       dayNames: Date.CultureInfo.dayNames,
 
-      // noms dels dies en format curt (depenent de l'idioma pot ser d'una lletra o de dos)
+      // short day names
       shortestDayNames: Date.CultureInfo.shortestDayNames,
 
-      // primer dia de la setmana ( generalment: 0 = Diumenge, 1 = Dilluns)
+      // first day of week offset. 0 = Sunday, 1 = Monday
       weekOffset: Date.CultureInfo.firstDayOfWeek
     },
 
-    // Controls
-    captions: {
-      // accés directe al dia d'avui
-      todayShortcutCaption: 'Avui',
+    captions: {      
+      // today shortcut
+      todayShortcutCaption: 'Today',
 
-      // botó de més anterior
+      // prev month button caption
       prevButtonCaption: '&laquo;',
 
-      // botó de mes següent
+      // next month button caption
       nextButtonCaption: '&raquo;',
 
-      // label dels selectors de data
-      inputsLabel: 'Rang de dates',
+      // date range selector label
+      inputsLabel: 'Date range',
 
-      // text del botó d'acceptar
-      okButtonCaption: 'Acceptar',
+      // accept button caption
+      okButtonCaption: 'Accept',
 
-      // text del botó de cancelar
-      cancelButtonCaption: 'Cancelar',
+      // cancel button caption
+      cancelButtonCaption: 'Cancel',
 
-      invalidRangeMessage: 'El rang seleccionat no es vàlid!'
+      invalidRangeMessage: 'Invalid date range!'
     }
   },
 
-  // Template
+  // template options
+  // mainly the range picker component DOM layout
   Template: {
-    // Principal
+    // main template (full rangepicker skeleton)
     main:  '<a id="rangepicker_display" href="#" title="#{rangeText}" class="display">' +
               '<table border="0" cellspacing="0" cellpadding="0">' +
                 '<tbody>' +
@@ -88,10 +90,12 @@ var RangePickerOptions = {
               '</div>' +
             '</div>',
 
-    // Calendari
+    // calendar
     calendar: {
+      // weekday cell
       weekday: '<th scope="col" abbr="#{weekday_abbr}">#{weekday_short_desc}</th>',
 
+      // calendar table
       table:   '<table id="#{calendar_id}" border="0" cellspacing="0" cellpadding="5">' +
                   '<caption></caption>' +
                   '<thead>' +
@@ -111,34 +115,35 @@ var RangePickerOptions = {
     }
   },
 
-  // Opcions
+  // options
   Options: {
-    // nombre de mesos que es mostren
+    // months shown at a time
     months: 3,
 
-    // posició del més actual (un de: first/last/middle)
+    // current month position
+    // one of: 'first', 'last', 'middle'
     currentMonthPosition: 'last',
 
-    // data actual (referencia),
+    // current date
     current: Date.today(),
 
-    // la data més antiga que es pot seleccionar
+    // earliest date which can be selected
     earliest: Date.today().add({years: -1}),
 
-    // la data més llunyana que es pot seleccionar
+    // latest date which can be selected
     latest: Date.today(),
 
-    // events
+    // callback dispatched when range selection changes
     onRangeChange: Prototype.emptyFunction(),
 
-    // efectes
+    // wether to use effects (Script.aculo.us effects library needed)
     useEffects: typeof Effect != 'undefined'
   }
 };
 
 var RangePicker = Class.create({
 
-  version: '0.1',
+  version: '0.5',
 
   initialize: function(element) {
     this.element = $(element);
@@ -146,30 +151,33 @@ var RangePicker = Class.create({
     if ( !this.element )
       throw('Element de destí inexistent.');
 
-    // Accessos directes
+    // shortcuts to config objects
     this.options = Object.extend(RangePickerOptions.Options, arguments[1] || {});
     this.locale = Object.extend(RangePickerOptions.Locale, arguments[2] || {});
     this.template = Object.extend(RangePickerOptions.Template, arguments[3] || {});
 
-    // Rang
+    // remove possible bad time info from earliest/latest timestamps
     this.options.earliest.clearTime();
     this.options.latest.clearTime().set({hour:23, minute: 59, second: 59});
 
+    // set current range to current date
     this.date = this.options.current.clone();
     this.range = {start: this.date.clone(), end: this.date.clone()};
 
-    // Seleccions en el calendari
+    // initalize selection object
     this.selecting = false;
     this.selection = {start: this.range.start.clone(), end: this.range.end.clone(), pin: null};
 
-    // Construim el DOM
+    // build DOM
     this.build();
     this.fill();
 
-    // Events
+    // register event listeners
     this.registerEventObservers();
   },
 
+  // constructs the DOM of the rangepicker component from the RangePickerOptions.Template
+  // object and inserts it into the document.
   build: function() {
     var weekday = new Template(this.template.calendar.weekday);
     var weekdaysHtml = '';
@@ -206,14 +214,19 @@ var RangePicker = Class.create({
     this.element.update(rangepicker.evaluate(conv));
 
     this.display = this.element.down('td');
-    this.rangeControls = {start: $('inici'), end: $('fi'), errorMessage: $('range_error_description'), okButton: $('acceptar'), cancelButton: $('cancelar')};
+    this.rangeControls = {
+      start: $('inici'), 
+      end: $('fi'), 
+      errorMessage: $('range_error_description'), 
+      okButton: $('acceptar'), 
+      cancelButton: $('cancelar')
+     };
   },
 
-  /*
-    TODO Aquesta funció es força pesada, pensar com millorarla i executarla més eficientment...
-  */
+  // fills up the calendar with proper values given the selected date range
+  // TODO: This function is quite heavy, should rethink its implementation...
   fill: function() {
-    // Calculem la data d'inici on hem de començar
+    // get the start date (from which we'll start filling values)
     var start = this.date.clone().clearTime();
     var months = 0;
     switch( this.options.currentMonthPosition ) {
@@ -227,30 +240,30 @@ var RangePicker = Class.create({
     }
     start.addMonths(months);
 
-    // Per a cada més emplenem els dies corresponents...
+    // for each month, fill its days
     for (var i=0, m=this.options.months; i < m; ++i) {
       var calendar = $('calendar_' + i);
       var caption = calendar.down('caption');
-      // Nom del més en l'idioma corresponent
+      // update caption with month name
       caption.update(this.locale.date.monthNames[start.getMonth()] + ' ' + start.getFullYear());
 
       var current = start.clone().moveToFirstDayOfMonth();
-      // 1er dia del més actual
+      // first day of month
       var firstDay = current.clone();
-      // ultima dia del mes actual
+      // last day of month
       var lastDay = firstDay.clone().moveToLastDayOfMonth();
-      // movem la data al primer dilluns (si cal) de la setmana del primer dia de mes i aquesta es la data de partida...
-      if (current.getDay() != 1) { // si no som a dilluns tirem enrere
+      // move the date to first monday (if necessary) of first week of the month. 
+      // This should be the start date
+      if (current.getDay() != 1)
         current = current.moveToDayOfWeek(1, -1);
-      }
 
-      // Emplenemt les cel.les
+      // fill up calendar cells
       calendar.select('td').each(function(cell) {
         cell.date = current.clone();
         cell.update(current.getDate());
-        cell.writeAttribute('class', ''); // esborrem  primer (per a pasades posteriors)
+        cell.writeAttribute('class', ''); // clear css classes
 
-        // afegim les clases necesaries
+        // add proper class attributes
         if ( !current.between(firstDay, lastDay) )
           cell.addClassName('beyond');
         else
@@ -264,7 +277,7 @@ var RangePicker = Class.create({
         else
           cell.addClassName('unselectable');
 
-        // ens guardem una copia de les clases assignades per a operacions posteriors
+        // save a copy of old assigned class attributes for later use
         cell.classDefault = cell.readAttribute('class');
 
         current.addDays(1);
@@ -273,17 +286,17 @@ var RangePicker = Class.create({
       start.addMonths(1);
     }
 
-    // Dibuixem la sel.lecció
+    // finally, draw selection
     this.refreshSelectionRange(this.selection.start, this.selection.end);
   },
 
   registerEventObservers: function() {
     var el;
 
-    // Display
+    // main display
     this.display.observe('click', this.toggleRangeSelector.bind(this));
 
-    // Botons del calendari (anterior, següent, avui)
+    // calendar buttons (prev, next, today)
     if ( el = $('calendars_controls').down('.calendar_button.prev') )
       el.observe('click', this.onCalendarButtonClick.bind(this));
 
@@ -293,24 +306,25 @@ var RangePicker = Class.create({
     if ( el = $('calendars_controls').down('.calendar_button.today') )
       el.observe('click', this.onCalendarButtonClick.bind(this));
 
-    // Calendari
+    // calendar (cell clicks, onmouseover)
     $$('#calendars_container td').each(function(day) {
       day.observe('click', this.onDayCellClick.bind(this));
       day.observe('mouseover', this.onDayCellMouseOver.bind(this));
     }.bind(this));
 
-    // Controls
-    // Botons d'acceptar i cancel.lar
+    // accept/cancel
     this.rangeControls.okButton.observe('click', this.onAcceptClick.bind(this));
     this.rangeControls.cancelButton.observe('click', this.onCancelClick.bind(this));
-    // Inputs de data (rang)
+    // date range inputs
     this.rangeControls.start.observe('blur', this.onRangeFieldBlur.bind(this));
     this.rangeControls.end.observe('blur', this.onRangeFieldBlur.bind(this));
     new Form.Element.Observer(this.rangeControls.start, 0.2, this.onRangeFieldChange.bind(this));
     new Form.Element.Observer(this.rangeControls.end, 0.2, this.onRangeFieldChange.bind(this));
   },
 
-  // Events
+  /////////////////////////////////////////////////////////////////////////////
+  // Event handlers
+  /////////////////////////////////////////////////////////////////////////////
 
   onCalendarButtonClick: function(e) {
     var el = e.findElement('.calendar_button');
@@ -330,30 +344,31 @@ var RangePicker = Class.create({
     var day = Event.element(e);
 
     if ( !this.selecting && !day.hasClassName('unselectable') ) {
-      // establim el pin (primer click d'una selecció de rang)
+      // set the selection pin (selection pin is date of the first click when 
+      // selecting a range)
       this.selection.pin = day.date.clone();
 
-      // el rang comença i acaba amb la data on hem fet click
+      // first, range starts and ends on the clicked date
       this.selection.start = day.date.clone();
       this.selection.end = day.date.clone();
 
-      // seleccionem la cel.la
+      // mark cell as selected
       this.selectDayCell(day);
 
-      // actualitzem la visualització del rang seleccionat
+      // draw selection
       this.refreshSelectionRange(this.selection.start, this.selection.end);
     }
     this.selecting = !this.selecting;
   },
 
   onDayCellMouseOver: function(e) {
-    // si no hem fet click previament (no estem seleccionant), fora
+    // exit if we are not performing a date range selection
     if ( !this.selecting ) return;
 
-    // cel.la per on ens estem movent
+    // which cell are we over?
     var dayOver = Event.element(e);
 
-    // actualitzem el rang a les dates compreses entre la data del primer click i la que ens movem
+    // update range selection    
     this.refreshSelectionRange(this.selection.pin, dayOver.date);
   },
 
@@ -390,18 +405,18 @@ var RangePicker = Class.create({
   },
 
   onAcceptClick: function(e) {
-    // Actualitzem el rang a partir de la selecció realitzada
+    // update range from selection
     this.range.start = this.selection.start.clone();
     this.range.end = this.selection.end.clone();
 
-    // Actualitzem el display
+    // update main display
     var newRangeDisplay = this.rangeToDisplayString();
     this.display.update(newRangeDisplay).writeAttribute('title', newRangeDisplay.replace('&ndash;', '-'));
 
-    // Amaguem el selector de rangs de dates
+    // hide date range selector
     this.toggleRangeSelector();
 
-    // dispatch onRangeChange() callback if present (by solomongaby)
+    // dispatch onRangeChange() callback if present
     if ( this.options.onRangeChange )
       this.options.onRangeChange();
 
@@ -410,16 +425,16 @@ var RangePicker = Class.create({
   },
 
   onCancelClick: function(e) {
-    // Amaguem el selector de rangs de dates
+    // hide date range selector
     this.toggleRangeSelector();
 
-    // desfem
+    // undo
     this.selection.start = this.range.start.clone();
     this.selection.end = this.range.end.clone();
     this.selection.pin = null;
     this.refreshSelectionRange(this.selection.start, this.selection.end);
 
-    // per si estava actiu...
+    // just in case it was active...
     this.rangeControls.errorMessage.hide();
   },
 
