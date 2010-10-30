@@ -1,3 +1,7 @@
+/*
+Simple Range Picker Style Sheet
+Coded in 2008 by Estanislau Trepat. Licensend under the MIT License.
+*/
 #rangepicker {
  font-family: Arial, Helvetica, sans-serif;
  font-size: 1em;
@@ -5,7 +9,7 @@
  z-index: 10;
 }
 
-/* Selector */
+/* main display */
 
 #rangepicker a.display {
 	margin: 0;
@@ -43,7 +47,7 @@
   background: #f7f7f7 url('../images/button_arrow_up.gif') no-repeat scroll center center;
 }
 
-/* Calendaris */
+/* calendars */
 
 #rangepicker .calendars  {
   display: inline-block;
@@ -56,14 +60,13 @@
   background-color: #f7f7f7;
 }
 
-/** Controls **/
+/* controls (buttons, etc.) */
 
 #rangepicker .calendars ul#calendars_controls {
   list-style-type: none;
   font-weight: bold;
   margin: auto;
   padding: 0 0 6px;
-  width: 98px;
 }
 
 #rangepicker .calendars ul#calendars_controls li {
@@ -75,13 +78,21 @@
   height: 20px;
   padding: 2px 0 0;
   text-decoration: none;
-  width: 30px;
 }
 
 #rangepicker .calendars ul#calendars_controls li a.prev,
 #rangepicker .calendars ul#calendars_controls li a.next,
 #rangepicker .calendars ul#calendars_controls li a.today {
   color: #468966;
+}
+
+#rangepicker .calendars ul#calendars_controls li a.prev,
+#rangepicker .calendars ul#calendars_controls li a.next {
+  width: 30px;    
+}
+
+#rangepicker .calendars ul#calendars_controls li a.today {
+  width: 60px;
 }
 
 #rangepicker .calendars ul#calendars_controls li a.prev:hover,
@@ -96,7 +107,7 @@
   color: #eee;
 }
 
-/** Taula de calendari **/
+/** calendar table **/
 
 #rangepicker .calendars table {
   display: inline;
@@ -140,7 +151,7 @@
   cursor: pointer;
 }
 
-/* Seleccions */
+/* selections */
 
 #rangepicker .calendars table tbody td.selectable:hover {
   background-color: #bbb;
@@ -152,18 +163,16 @@
 }
 
 #rangepicker .calendars table tbody td.selected {
-  /*background-color: #ffb03b;*/
   background-color: #07c;
   color: white;
 }
 
 #rangepicker .calendars table tbody td.selected:hover {
-  /*background-color: #e99a27;*/
   background-color: #09e;
   color: white;
 }
 
-/* Rangs */
+/* date ranges */
 
 #rangepicker .calendars table tbody td.startrange,
 #rangepicker .calendars table tbody td.endrange,
@@ -196,10 +205,7 @@
 
 #rangepicker .calendars table tbody td.beyond_selected {
   background-color: #888;
-  /*background-color: #05a;*/
 }
-
-/* Controls */
 
 #rangepicker .controls {
   margin: 6px;
@@ -260,4 +266,3 @@
   text-decoration: underline;
   color: #00f;
 }
-
