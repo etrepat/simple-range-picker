@@ -37,7 +37,8 @@ details on the options avaible on both objects.
         });
     </script>
 
-You can see it in action online [here]() or take a look at the `example` folder.
+You can see it in action online [here](http://etrepat.github.com/simple-range-picker/) 
+or take a look at the `example` folder.
 
 ## Dependencies
 
