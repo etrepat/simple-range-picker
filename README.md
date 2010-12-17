@@ -16,8 +16,7 @@ can see on *Google Analytics* and [Stephen Celis's](http://stephencelis.com/) [T
 - `currentMonthPosition`: position of current month. one of: `first`, `last` or
 `middle`. (default: `last`).
 - `current`: current date. (default: 'Date.today()').
-- `initialSelectionStart`: initial selection range start date (default: 'Date.today()')
-- `initialSelectionEnd`: initial selection range end date (default: 'Date.today()')
+- `initialSelectionStart`, `initialSelectionEnd`: initial selection range start/end dates (default: 'Date.today()')
 - `earliest`, `latest`: The earliest and latest selectable dates. (default: `earliest`)
 - `onRangeChange`: callback fired when range selection changes
 
