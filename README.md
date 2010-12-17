@@ -16,6 +16,8 @@ can see on *Google Analytics* and [Stephen Celis's](http://stephencelis.com/) [T
 - `currentMonthPosition`: position of current month. one of: `first`, `last` or
 `middle`. (default: `last`).
 - `current`: current date. (default: 'Date.today()').
+- `initialSelectionStart`: initial selection range start date (default: 'Date.today()')
+- `initialSelectionEnd`: initial selection range end date (default: 'Date.today()')
 - `earliest`, `latest`: The earliest and latest selectable dates. (default: `earliest`)
 - `onRangeChange`: callback fired when range selection changes
 
@@ -37,7 +39,7 @@ details on the options avaible on both objects.
         });
     </script>
 
-You can see it in action online [here](http://etrepat.github.com/simple-range-picker/) 
+You can see it in action online [here](http://etrepat.github.com/simple-range-picker/)
 or take a look at the `example` folder.
 
 ## Dependencies
@@ -56,7 +58,7 @@ were when this component was written.
 ## Localization
 
 Localization can be accomplished by modifying the strings present in `RangePickerOptions.Locale`
-object. Also, as this project relies on the [Datejs](http://code.google.com/p/datejs/) library for 
+object. Also, as this project relies on the [Datejs](http://code.google.com/p/datejs/) library for
 date manipulation, dropping a localized *culture info file* will do the job for date formats, day names, etc.
 
 ---
