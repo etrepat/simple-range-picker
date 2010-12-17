@@ -7,11 +7,11 @@ if ( typeof Date.CultureInfo == 'undefined' )
 var RangePickerOptions = {
   // locale options object
   // By using a localized culture info file (see the source code of the example site)
-  // and localizing the strings here you should get a fully functional 
+  // and localizing the strings here you should get a fully functional
   // RangePicker in your own language.
   Locale: {
-  
-    date: {      
+
+    date: {
       // date format on the main display
       displayFormat: 'MMM d, yyyy',
 
@@ -31,7 +31,7 @@ var RangePickerOptions = {
       weekOffset: Date.CultureInfo.firstDayOfWeek
     },
 
-    captions: {      
+    captions: {
       // today shortcut
       todayShortcutCaption: 'Today',
 
@@ -127,6 +127,12 @@ var RangePickerOptions = {
     // current date
     current: Date.today(),
 
+    // initial selection range (start)
+    initialSelectionStart: Date.today(),
+
+    // initial selection range (end)
+    initialSelectionEnd: Date.today(),
+
     // earliest date which can be selected
     earliest: Date.today().add({years: -1}),
 
@@ -160,9 +166,21 @@ var RangePicker = Class.create({
     this.options.earliest.clearTime();
     this.options.latest.clearTime().set({hour:23, minute: 59, second: 59});
 
-    // set current range to current date
+    // set date to current (whichever it is)
     this.date = this.options.current.clone();
-    this.range = {start: this.date.clone(), end: this.date.clone()};
+
+    // initialize initial range (selection) properly
+    this.options.initialSelectionStart = this.options.initialSelectionStart || this.date.clone();
+    this.options.initialSelectionEnd = this.options.initialSelectionEnd || this.date.clone();
+
+    this.range = {start: this.options.initialSelectionStart, end: this.options.initialSelectionEnd};
+
+    // check bounds
+    if ( !this.range.start.between(this.options.earliest, this.options.latest) )
+        this.range.start = this.date.clone();
+
+    if ( !this.range.end.between(this.options.earliest, this.options.latest) )
+        this.range.end = this.date.clone();
 
     // initalize selection object
     this.selecting = false;
@@ -216,10 +234,10 @@ var RangePicker = Class.create({
     this.display = this.element.down('td');
     this.dropDownArrow = this.display.next();
     this.rangeControls = {
-      start: $('inici'), 
-      end: $('fi'), 
-      errorMessage: $('range_error_description'), 
-      okButton: $('acceptar'), 
+      start: $('inici'),
+      end: $('fi'),
+      errorMessage: $('range_error_description'),
+      okButton: $('acceptar'),
       cancelButton: $('cancelar')
      };
   },
@@ -253,7 +271,7 @@ var RangePicker = Class.create({
       var firstDay = current.clone();
       // last day of month
       var lastDay = firstDay.clone().moveToLastDayOfMonth();
-      // move the date to first monday (if necessary) of first week of the month. 
+      // move the date to first monday (if necessary) of first week of the month.
       // This should be the start date
       if (current.getDay() != 1)
         current = current.moveToDayOfWeek(1, -1);
@@ -330,7 +348,7 @@ var RangePicker = Class.create({
 
   onCalendarButtonClick: function(e) {
     e.stop();
-    
+
     var el = e.findElement('.calendar_button');
     if ( el ) {
       if ( el.hasClassName('prev') ) {
@@ -342,17 +360,17 @@ var RangePicker = Class.create({
       }
       this.fill();
     }
-    
+
     return false;
   },
 
   onDayCellClick: function(e) {
     e.stop();
-    
+
     var day = Event.element(e);
 
     if ( !this.selecting && !day.hasClassName('unselectable') ) {
-      // set the selection pin (selection pin is date of the first click when 
+      // set the selection pin (selection pin is date of the first click when
       // selecting a range)
       this.selection.pin = day.date.clone();
 
@@ -367,7 +385,7 @@ var RangePicker = Class.create({
       this.refreshSelectionRange(this.selection.start, this.selection.end);
     }
     this.selecting = !this.selecting;
-    
+
     return false;
   },
 
@@ -378,7 +396,7 @@ var RangePicker = Class.create({
     // which cell are we over?
     var dayOver = Event.element(e);
 
-    // update range selection    
+    // update range selection
     this.refreshSelectionRange(this.selection.pin, dayOver.date);
   },
 
@@ -416,7 +434,7 @@ var RangePicker = Class.create({
 
   onAcceptClick: function(e) {
     if ( e ) e.stop();
-    
+
     // update range from selection
     this.range.start = this.selection.start.clone();
     this.range.end = this.selection.end.clone();
@@ -430,17 +448,17 @@ var RangePicker = Class.create({
 
     // dispatch onRangeChange() callback if present
     if ( this.options.onRangeChange )
-      this.options.onRangeChange();      
+      this.options.onRangeChange();
 
     if ( this.options.useEffects )
       new Effect.Highlight(this.display, {duration: 0.5});
-      
+
     return false;
   },
 
   onCancelClick: function(e) {
     if ( e ) e.stop();
-    
+
     // hide date range selector
     this.toggleRangeSelector();
 
@@ -452,13 +470,13 @@ var RangePicker = Class.create({
 
     // just in case it was active...
     this.rangeControls.errorMessage.hide();
-    
+
     return false;
   },
 
   toggleRangeSelector: function(e) {
     if ( e ) e.stop();
-    
+
     var dropdown = $('rangepicker_display').down('.dropdown');
     dropdown.toggleClassName('up');
 
@@ -468,7 +486,7 @@ var RangePicker = Class.create({
       calendarSelector.toggle();
     else
       Effect.toggle(calendarSelector,'blind', {duration: 0.5});
-      
+
     return false;
   },
 
