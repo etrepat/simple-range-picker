@@ -88,7 +88,7 @@ Coded in 2008 by Estanislau Trepat. Licensend under the MIT License.
 
 #rangepicker .calendars ul#calendars_controls li a.prev,
 #rangepicker .calendars ul#calendars_controls li a.next {
-  width: 30px;    
+  width: 30px;
 }
 
 #rangepicker .calendars ul#calendars_controls li a.today {
@@ -188,7 +188,7 @@ Coded in 2008 by Estanislau Trepat. Licensend under the MIT License.
   background-image: url('../images/end.png');
 }
 
-#rangepicker .calendars table tbody td.startendrange {
+#rangepicker .calendars table tbody td.startrange.endrange {
   background-image: url('../images/startend.png');
 }
 
@@ -266,3 +266,4 @@ Coded in 2008 by Estanislau Trepat. Licensend under the MIT License.
   text-decoration: underline;
   color: #00f;
 }
+

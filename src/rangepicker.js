@@ -529,18 +529,30 @@ var RangePicker = Class.create({
 
     var selectedDays = this.element.select('#calendars_container td.selected');
     if ( selectedDays.length >= 1 ) {
-      var dayStart = selectedDays.first();
-      var dayEnd = selectedDays.last();
-
-      if ( dayStart.date.equals(dayEnd.date) )
-        dayStart.addClassName('startendrange').removeClassName('startrange').removeClassName('endrange');
-      else {
-        dayStart.addClassName('startrange');
-        dayEnd.addClassName('endrange');
+      // get selection start & end and swap if necessary
+      var selStart = start.clone(), selEnd = end.clone(), tmp = start.clone();
+      if ( selStart.isAfter(selEnd) ) {
+        selStart = selEnd.clone();
+        selEnd = tmp.clone();
       }
 
-      this.selection.start = dayStart.date.clone();
-      this.selection.end = dayEnd.date.clone();
+      // draw start/end range rounded corner background
+      var firstVisibleCell = selectedDays.first(), firstVisibleDay = firstVisibleCell.date,
+        lastVisibleCell = selectedDays.last(), lastVisibleDay = lastVisibleCell.date;
+
+      // clear styles
+      firstVisibleCell.removeClassName('startrange').removeClassName('endrange');
+      lastVisibleCell.removeClassName('startrange').removeClassName('endrange');
+
+      // draw start & end background if appropiate
+      if ( selStart.equals(firstVisibleDay) )
+        firstVisibleCell.addClassName('startrange');
+
+      if ( selEnd.equals(lastVisibleDay) )
+        lastVisibleCell.addClassName('endrange');
+
+      this.selection.start = selStart.clone();
+      this.selection.end = selEnd.clone();
 
       this.rangeControls.start.value = this.selection.start.toString(this.locale.date.format);
       this.rangeControls.end.value = this.selection.end.toString(this.locale.date.format);
