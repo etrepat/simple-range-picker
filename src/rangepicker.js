@@ -10,7 +10,6 @@ var RangePickerOptions = {
   // and localizing the strings here you should get a fully functional
   // RangePicker in your own language.
   Locale: {
-
     date: {
       // date format on the main display
       displayFormat: 'MMM d, yyyy',
@@ -551,6 +550,7 @@ var RangePicker = Class.create({
       if ( selEnd.equals(lastVisibleDay) )
         lastVisibleCell.addClassName('endrange');
 
+      // update selection
       this.selection.start = selStart.clone();
       this.selection.end = selEnd.clone();
 
